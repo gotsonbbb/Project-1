@@ -1,0 +1,7 @@
+{
+  "name": "Marketing support",
+  "description": "Premium AI-powered Universal Sales Assistant for Myanmar vendors with Image Editing and Maps integration.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

@@ -25,5 +25,13 @@
     },
     "allowImportingTsExtensions": true,
     "noEmit": true
+  }   
+  {
+  "appId": "com.yourname.marketingsupport",
+  "appName": "Marketing Support",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
   }
+}
 }

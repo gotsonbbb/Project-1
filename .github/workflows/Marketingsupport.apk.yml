@@ -1,34 +1,57 @@
 name: Build Android APK
-on: [push]
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
+      # 1. Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
+
+      # 2. Setup Node.js with caching
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+          cache: 'npm'
+
+      # 3. Install dependencies (faster with cache)
       - name: Install dependencies
-        run: npm install
-      - name: Install Capacitor CLI
-        run: npm install -g @capacitor/cli
+        run: npm ci
+
+      # 4. Build Vue project
       - name: Build web project
         run: npm run build
-      - name: Add Android platform
-        run: npx cap add android
+
+      # 5. Capacitor setup
+      - name: Install Capacitor CLI
+        run: npm install -g @capacitor/cli
+
       - name: Sync Android
         run: npx cap sync android
+
+      # 6. Setup Java & Gradle cache
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
+          cache: 'gradle'
+
+      # 7. Build APK (debug)
       - name: Build APK
         run: |
           cd android
           ./gradlew assembleDebug
+
+      # 8. Upload APK artifact
       - name: Upload APK artifact
         uses: actions/upload-artifact@v3
         with:
